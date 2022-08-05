@@ -1,0 +1,27 @@
+FROM php:7.4-cli AS builder
+
+WORKDIR /var/www
+
+RUN apt-get update && \
+apt-get install libzip-dev -y && \
+docker-php-ext-install zip
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \ 
+php composer-setup.php && \ 
+php -r "unlink('composer-setup.php');" 
+
+RUN php composer.phar create-project laravel/laravel laravel
+
+#trabalhando com multMultistage building 
+
+FROM php:7.4-fpm-alpine
+WORKDIR /var/www
+RUN rm -rf /var/www/html
+COPY --from=builder /var/www/laravel . 
+
+# permiti que o alphani linux possa executar comandos e gravar arquivos dentro da nossa pasta
+RUN chown -R www-data:www-data /var/www
+#expor porta
+EXPOSE 9000
+#executa php
+CMD ["php-fpm"]
