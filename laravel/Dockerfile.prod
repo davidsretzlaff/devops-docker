@@ -19,8 +19,13 @@ WORKDIR /var/www
 RUN rm -rf /var/www/html
 COPY --from=builder /var/www/laravel . 
 
+# simbolic link
+# when i access the html folder i will be accessing the public folder
+RUN ln -s public html
+
 # permiti que o alphani linux possa executar comandos e gravar arquivos dentro da nossa pasta
 RUN chown -R www-data:www-data /var/www
+
 #expor porta
 EXPOSE 9000
 #executa php
