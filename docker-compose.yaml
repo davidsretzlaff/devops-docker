@@ -1,0 +1,24 @@
+#docker-compose is a complementary tool to docker based on a yml file,
+#manages to catch all the containers and automatically ascend at once, with a single command.
+
+version: '3'
+
+services:
+
+  laravel:
+    image: davidsretzlaff/laravel:prod
+    container_name: laravel
+    networks:
+      - laranet
+
+  nginx: 
+    image: davidsretzlaff/nginx:prod
+    container_name: nginx
+    networks:
+      - laranet
+    ports:
+     - "8080:80"
+
+networks:
+ laranet:
+    driver: bridge
