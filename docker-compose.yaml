@@ -1,0 +1,12 @@
+#docker-compose is a complementary tool to docker based on a yml file,
+#manages to catch all the containers and automatically ascend at once, with a single command.
+
+version: '3'
+
+services:
+
+
+
+networks:
+ laranet:
+    driver: bridge
